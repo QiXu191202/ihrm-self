@@ -37,12 +37,19 @@ module.exports = {
   // 开发服务器配置
   devServer: {
     port: port,
-    open: true,
+    // open: true,
     // 冲突如何处理
     overlay: {
       warnings: false,
       errors: true
     },
+    // proxy代理
+    proxy: {
+      '/api': {
+        target: 'http://ihrm.itheima.net/',
+        changeOrigin: true
+      }
+    }
     // 在运行之前，加载mock服务器内容
     // before: require('./mock/mock-server.js')
   },

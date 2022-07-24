@@ -127,6 +127,7 @@ export default {
         this.loading = false;
         return console.log(error);
       }
+      this.loading = false;
       // 3 跳转页面
       this.$router.push({ path: this.redirect || "/" });
     },

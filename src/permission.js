@@ -6,7 +6,8 @@ import 'nprogress/nprogress.css' // progress bar style
 // 白名单
 const whiteList = ['/404', '/login']
 
-router.beforeEach((to, from, next) => {
+// 全局前置守卫
+router.beforeEach(async (to, from, next) => {
     // 开启进度条
     NProgress.start()
     const token = store.getters.token
@@ -16,6 +17,9 @@ router.beforeEach((to, from, next) => {
         if (to.path === '/login') {
             next('/')
         } else {
+            if (!store.getters.userId) {
+                await store.dispatch('user/getUserInfo')
+            }
             next()
         }
     } else {

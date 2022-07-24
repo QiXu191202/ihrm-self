@@ -1,5 +1,5 @@
 import { loginApi, getUserInfoApi, getUserBaseInfoApi } from '@/api/user'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { getToken, setToken, removeToken, setTimeStamp } from '@/utils/auth'
 
 const state = {
   token: getToken(), // token
@@ -10,6 +10,7 @@ const mutations = {
   setToken(state, data) {
     state.token = data
     setToken(data)
+    setTimeStamp() //记录登录的时间戳
   },
 
   // 删除token
@@ -35,6 +36,7 @@ const actions = {
   },
   async logout(context) {
     context.commit("removeToken")
+    context.commit("removeUserInfo")
   },
   async getUserInfo(context) {
     let res = await getUserInfoApi()

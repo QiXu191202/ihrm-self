@@ -28,6 +28,14 @@ if (process.env.NODE_ENV === 'production') {
   mockXHR()
 }
 
+// 自定义指令
+// 读取某个模块所有暴露信息
+import * as directive from '@/directive'
+Object.keys(directive).forEach(key => {
+  console.log(key, directive[key]);
+  Vue.directive(key, directive[key])
+})
+
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明

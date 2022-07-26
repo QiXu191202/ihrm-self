@@ -11,7 +11,6 @@ import getters from './getters'
 //以及一个匹配文件的正则表达式。
 
 const req = require.context('./modules', false, /\.js$/)
-console.log(req);
 const keyArr = req.keys().map(item => item.split('./')[1]).map(item => item.split('.js')[0])
 const valArr = req.keys().map(req)
 const modules = {}

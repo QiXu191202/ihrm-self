@@ -32,7 +32,6 @@ if (process.env.NODE_ENV === 'production') {
 // 读取某个模块所有暴露信息
 import * as directive from '@/directive'
 Object.keys(directive).forEach(key => {
-  console.log(key, directive[key]);
   Vue.directive(key, directive[key])
 })
 

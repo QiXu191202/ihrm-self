@@ -47,8 +47,10 @@ export default {
         this.$emit("addDept", this.treeNode);
       }
       if (val === "del") {
+        this.$emit("delDept", this.treeNode.id);
       }
       if (val === "edit") {
+        this.$emit("editDept", this.treeNode.id);
       }
     },
   },

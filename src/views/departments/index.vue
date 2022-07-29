@@ -13,12 +13,14 @@
         <el-tree :data="depts" :props="{ label: 'name' }">
           <tree-tools
             @addDept="addDept"
+            @editDept="editDept"
+            @delDept="delDept"
             slot-scope="{ data }"
             :treeNode="data"
           ></tree-tools>
         </el-tree>
         <!-- 新增弹框组件 -->
-        <addDept ref="addDept"></addDept>
+        <addDept ref="addDept" @addDepart="initData"></addDept>
       </el-card>
     </div>
   </div>
@@ -27,7 +29,11 @@
 <script>
 import addDept from "./components/add-dept.vue";
 import treeTools from "./components/tree-tools.vue";
-import { getDepartmentListApi } from "@/api/department";
+import {
+  getDepartmentListApi,
+  getDepartmentInfoApi,
+  delDepartmentApi,
+} from "@/api/department";
 import { transformList } from "@/utils";
 export default {
   name: "Departments",
@@ -50,6 +56,20 @@ export default {
     addDept(val) {
       this.$refs.addDept.dialogFormVisible = true;
       this.$refs.addDept.formData.pid = val.id;
+    },
+    async editDept(id) {
+      this.$refs.addDept.formData = await getDepartmentInfoApi(id);
+      this.$refs.addDept.dialogFormVisible = true;
+    },
+    async delDept(id) {
+      await this.$confirm("确定删除吗", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        center: true,
+      });
+      await delDepartmentApi(id);
+      this.$message.success("删除成功");
+      this.initData();
     },
     async initData() {
       let { companyName, depts } = await getDepartmentListApi();

@@ -1,5 +1,9 @@
 <template>
-  <el-dialog @close="close" title="新增角色" :visible.sync="dialogFormVisible">
+  <el-dialog
+    @close="close"
+    :title="formData.id ? '编辑角色' : '新增角色'"
+    :visible.sync="dialogFormVisible"
+  >
     <el-form ref="form">
       <el-form-item label="角色名称" label-width="100px">
         <el-input
@@ -31,6 +35,7 @@ export default {
       formData: {
         name: "",
         description: "",
+        id: "",
       },
       formRules: {
         name: [{ required: true, message: "请输入角色", trigger: "blur" }],

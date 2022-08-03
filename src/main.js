@@ -14,6 +14,8 @@ import router from './router'
 
 import '@/icons' // icon
 import '@/permission' // permission control
+import Components from '@/components'
+Vue.use(Components)
 
 /**
  * If you don't want to use mock-server
@@ -33,6 +35,11 @@ if (process.env.NODE_ENV === 'production') {
 import * as directive from '@/directive'
 Object.keys(directive).forEach(key => {
   Vue.directive(key, directive[key])
+})
+// 批量注册过滤器
+import * as filters from '@/filters'
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, filters[key])
 })
 
 // set ElementUI lang to EN

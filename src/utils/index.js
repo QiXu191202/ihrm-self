@@ -95,6 +95,27 @@ export function formatTime(time, option) {
 }
 
 /**
+ * 递归整理出树形结构数据
+ * @param {Array} list 要处理的数据
+ * @param {String | Number} rootValue 顶级的ID
+ * @param {Array} 返回的结果
+ * **/
+export function transListToTreeData(list, rootValue) {
+  const arr = []
+  // 遍历数组每个元素，是否有pid为rootValue(即0)
+  list.forEach(item => {
+    if (item.pid === rootValue) {
+      // 找到之后，再问item下有没有子节点
+      const children = transListToTreeData(list, item.id)
+      if (children.length) item.children = children
+      arr.push(item)
+    }
+  })
+  // 最终返回一个数组
+  return arr
+}
+
+/**
  * @param {string} url
  * @returns {Object}
  */

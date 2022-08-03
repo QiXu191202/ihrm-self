@@ -43,6 +43,22 @@
             label="姓名"
             sortable=""
           />
+          <el-table-column label="头像" align="center">
+            <template slot-scope="{ row }">
+              <img
+                slot="reference"
+                v-imageError="require('@/assets/common/bigUserHeader.png')"
+                :src="row.staffPhoto"
+                style="
+                  border-radius: 50%;
+                  width: 100px;
+                  height: 100px;
+                  padding: 10px;
+                "
+                alt=""
+              />
+            </template>
+          </el-table-column>
           <el-table-column
             align="center"
             header-align="center"
@@ -140,6 +156,16 @@
     </div>
     <!-- 弹窗 -->
     <add-employee ref="addEmployee" @updateList="initData"></add-employee>
+    <!-- 生成二维码弹窗 -->
+    <el-dialog
+      title="二维码"
+      :visible.sync="showCodeDialog"
+      @close="imgUrl = ''"
+    >
+      <el-row type="flex" justify="center">
+        <canvas ref="myCanvas" />
+      </el-row>
+    </el-dialog>
   </div>
 </template>
 
@@ -162,6 +188,7 @@ export default {
       },
       total: 0,
       checkList: [],
+      showCodeDialog: false, // 显示二维码弹窗
     };
   },
   created() {

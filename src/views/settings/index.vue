@@ -40,7 +40,12 @@
                 label="操作"
               >
                 <template slot-scope="{ row }">
-                  <el-button size="small" type="success">分配权限</el-button>
+                  <el-button
+                    size="small"
+                    type="success"
+                    @click="assignAuthFn(row.id)"
+                    >分配权限</el-button
+                  >
                   <el-button
                     size="small"
                     type="primary"
@@ -114,6 +119,8 @@
         <add-role ref="addRole" @updateList="initData" />
       </el-card>
     </div>
+    <!-- 编辑权限弹窗 -->
+    <assign-auth ref="assignAuth" @updateList="initData" />
   </div>
 </template>
 
@@ -125,10 +132,12 @@ import {
   delRoleApi,
 } from "@/api/setting";
 import AddRole from "./components/addRole.vue";
+import AssignAuth from "./components/assign-auth.vue";
 export default {
   name: "settings",
   components: {
     AddRole,
+    AssignAuth,
   },
   data() {
     return {
@@ -176,6 +185,10 @@ export default {
       }
       await delRoleApi(id);
       this.$message.success("删除成功");
+      // 边缘问题--当前页最后一个数据删除成功处理
+      if (this.tableData.length === 1 && this.queryData.page > 1) {
+        this.queryData.page--;
+      }
       this.initData();
     },
     // 每页数量切换
@@ -187,6 +200,13 @@ export default {
     handleCurrentChange(val) {
       this.queryData.page = val;
       this.initData();
+    },
+    // 编辑权限
+    async assignAuthFn(id) {
+      let res = await getRoleInfoApi(id);
+      this.$refs.assignAuth.checkedAuth = res.permIds;
+      this.$refs.assignAuth.roleId = id;
+      this.$refs.assignAuth.isDialogShow = true;
     },
   },
 };

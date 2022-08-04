@@ -46,7 +46,8 @@ module.exports = {
     // proxy代理
     proxy: {
       '/api': {
-        target: 'http://ihrm.itheima.net/',
+        // target: 'http://ihrm.itheima.net/',
+        target: 'http://192.168.19.62:3000/',
         changeOrigin: true
       }
     }

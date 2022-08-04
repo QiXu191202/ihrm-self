@@ -42,3 +42,11 @@ export const delRoleApi = (id) => {
         method: "delete"
     })
 }
+// 给角色分配权限
+export const assignRoleApi = (data) => {
+    return request({
+        url: '/sys/role/assignPrem',
+        method: "put",
+        data
+    })
+}

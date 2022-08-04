@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { getEmployeesListApi } from "@/api/employees";
+import { getEmployeeListApi } from "@/api/employees";
 import { addDepartmentApi, editDepartmentApi } from "@/api/department";
 export default {
   name: "AddDept",
@@ -69,7 +69,7 @@ export default {
   },
   methods: {
     async getEmployeeList() {
-      this.employeeList = await getEmployeesListApi();
+      this.employeeList = await getEmployeeListApi();
     },
     async btnOK() {
       // 表单校验

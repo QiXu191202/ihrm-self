@@ -42,6 +42,9 @@ import * as filters from '@/filters'
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
+// --------------注册全局mixin-------------------
+import checkPermission from '@/mixins/checkPermissions'
+Vue.mixin(checkPermission)
 
 // set ElementUI lang to EN
 // Vue.use(ElementUI, { locale })

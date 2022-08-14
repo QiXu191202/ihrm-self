@@ -1,5 +1,6 @@
 import { loginApi, getUserInfoApi, getUserBaseInfoApi } from '@/api/user'
 import { getToken, setToken, removeToken, setTimeStamp } from '@/utils/auth'
+import { resetRouter } from '@/router'
 
 const state = {
   token: getToken(), // token
@@ -34,14 +35,22 @@ const actions = {
     // context.commit("setToken", res)
     context.commit("setToken", res)
   },
+  // 退出登录
   async logout(context) {
     context.commit("removeToken")
     context.commit("removeUserInfo")
+    // 路由实例重置
+    resetRouter()
+    // 侧边栏设置初始值
+    // 如果传递第三个参数为对象,配置root:true 则表示从跟模块开始
+    commit("permission/setRoutes", [], { root: true })
   },
+  // 获取用户资料
   async getUserInfo(context) {
     let res = await getUserInfoApi()
     let res1 = await getUserBaseInfoApi(res.userId)
     context.commit('setUserInfo', { ...res, ...res1 })
+    return { ...res, ...res1 }
   }
 }
 

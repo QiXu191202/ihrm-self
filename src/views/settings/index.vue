@@ -12,7 +12,7 @@
               >新增角色</el-button
             >
             <!-- 列表区域 -->
-            <el-table :data="tableData" style="width: 100%">
+            <el-table :data="list" style="width: 100%">
               <el-table-column
                 header-align="center"
                 align="center"
@@ -133,8 +133,10 @@ import {
 } from "@/api/setting";
 import AddRole from "./components/addRole.vue";
 import AssignAuth from "./components/assign-auth.vue";
+import list from "@/mixins/list";
 export default {
   name: "settings",
+  mixins: [list],
   components: {
     AddRole,
     AssignAuth,
@@ -143,20 +145,20 @@ export default {
     return {
       activeName: "first",
       // 列表
-      tableData: [],
+      // list: [],
       // 总数
-      total: 0,
+      // total: 0,
       queryData: {
-        page: 1,
+        // page: 1,
         pagesize: 5,
       },
       // 公司信息
       companyInfo: {},
     };
   },
-  created() {
-    this.initData();
-  },
+  // created() {
+  //   this.initData();
+  // },
   methods: {
     async initData() {
       try {
@@ -164,7 +166,7 @@ export default {
         this.companyInfo = await getcompanyInfoApi(
           this.$store.getters.conpanyId
         );
-        this.tableData = rows;
+        this.list = rows;
         this.total = total;
       } catch (error) {
         return console.log(error);
@@ -186,7 +188,7 @@ export default {
       await delRoleApi(id);
       this.$message.success("删除成功");
       // 边缘问题--当前页最后一个数据删除成功处理
-      if (this.tableData.length === 1 && this.queryData.page > 1) {
+      if (this.list.length === 1 && this.queryData.page > 1) {
         this.queryData.page--;
       }
       this.initData();
@@ -197,10 +199,10 @@ export default {
       this.initData();
     },
     // 当前页码切换
-    handleCurrentChange(val) {
-      this.queryData.page = val;
-      this.initData();
-    },
+    // handleCurrentChange(val) {
+    //   this.queryData.page = val;
+    //   this.initData();
+    // },
     // 编辑权限
     async assignAuthFn(id) {
       let res = await getRoleInfoApi(id);

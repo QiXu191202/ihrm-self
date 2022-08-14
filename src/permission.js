@@ -18,9 +18,16 @@ router.beforeEach(async (to, from, next) => {
             next('/')
         } else {
             if (!store.getters.userId) {
-                await store.dispatch('user/getUserInfo')
+                let { roles } = await store.dispatch('user/getUserInfo')
+                // roles.menus 该用户对应角色的权限标识
+                let routes = await store.dispatch("permission/filterRoutes", roles.menus)
+                // 添加动态路由映射数组
+                router.addRoutes([...routes, { path: '*', redirect: '/404', hidden: true }]) // 动态添加是一个耗时操作,如果直接next() 会出现路由还没有配置好的情况
+                // 再执行一次 next(地址) 再次进入导航守卫逻辑
+                next(to.path)
+            } else {
+                next()
             }
-            next()
         }
     } else {
         // 未登录

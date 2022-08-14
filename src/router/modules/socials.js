@@ -1,7 +1,7 @@
 import Layout from '@/layout'
 export default {
     path: '/socials', // 路径
-    name: 'socials', // 给路由规则加一个name
+    name: 'social_securitys', // 给路由规则加一个name
     component: Layout, // 组件
     // 配置二级路的路由表
     children: [{

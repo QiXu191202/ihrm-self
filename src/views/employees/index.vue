@@ -2,23 +2,31 @@
   <div class="dashboard-container">
     <div class="app-container">
       <page-tools :leftText="'共' + total + '条记录'">
-        <el-button size="small" type="danger" @click="exportExcelHandler"
+        <el-button
+          :disabled="!checkPermission('employees-export')"
+          size="small"
+          type="danger"
+          @click="exportExcelHandler"
           >普通excel导出</el-button
         >
         <el-button
+          :disabled="
+            !checkPermission('employees-export') || checkList.length === 0
+          "
           size="small"
           type="info"
-          :disabled="checkList.length === 0"
           @click="multiExportExcelHandler"
           >复杂表头excel导出</el-button
         >
         <el-button
+          :disabled="!checkPermission('employees-import')"
           size="small"
           type="success"
           @click="$router.push('/import?type=user')"
           >excel导入</el-button
         >
         <el-button
+          :disabled="!checkPermission('employees-add')"
           size="small"
           type="primary"
           @click="$refs.addEmployee.isDialogShow = true"
@@ -116,6 +124,7 @@
           >
             <template slot-scope="scope">
               <el-button
+                :disabled="!checkPermission('employees-edit')"
                 type="text"
                 size="small"
                 @click="$router.push('/employees/detail/' + scope.row.id)"
@@ -126,6 +135,7 @@
               <el-button type="text" size="small">离职</el-button>
               <el-button type="text" size="small">角色</el-button>
               <el-button
+                :disabled="!checkPermission('employees-del')"
                 type="text"
                 size="small"
                 @click="delHandler(scope.row.id)"
@@ -176,26 +186,28 @@ import EmoloyeeConstant from "@/api/constant/employees";
 import AddEmployee from "./components/add-employee.vue";
 import { formatDate } from "@/filters";
 import QrCode from "qrcode";
+import list from "@/mixins/list";
 export default {
   name: "Employee",
+  mixins: [list],
   components: {
     AddEmployee,
   },
   data() {
     return {
-      list: [],
+      // list: [],
       queryData: {
-        page: 1,
+        // page: 1,
         size: 10,
       },
-      total: 0,
+      // total: 0,
       checkList: [],
       showCodeDialog: false, // 显示二维码弹窗
     };
   },
-  created() {
-    this.initData();
-  },
+  // created() {
+  //   this.initData();
+  // },
   methods: {
     async initData() {
       let { rows, total } = await getEmployeeListApi(this.queryData);
@@ -208,10 +220,10 @@ export default {
       this.initData();
     },
     // 当前页面
-    handleCurrentChange(val) {
-      this.queryData.page = val;
-      this.initData();
-    },
+    // handleCurrentChange(val) {
+    //   this.queryData.page = val;
+    //   this.initData();
+    // },
     // 格式化时间
     formatterFn(row, column, cellValue, index) {
       let res = EmoloyeeConstant.hireType.find(
